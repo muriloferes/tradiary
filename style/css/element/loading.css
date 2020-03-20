@@ -1,0 +1,7 @@
+.loading {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  z-index: 1000;
+}
+
+/*# sourceMappingURL=loading.css.map */
