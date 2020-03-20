@@ -13,6 +13,8 @@ class Operacao extends DBTable {
 		$this->columns["totalbruto"] = new DBColumnDecimal("totalbruto", 2);
 		$this->columns["totalliquido"] = new DBColumnDecimal("totalliquido", 2);
 		$this->columns["contratos"] = new DBColumnInteger("contratos");
+		$this->columns["deposito"] = new DBColumnDecimal("deposito", 2);
+		$this->columns["retirada"] = new DBColumnDecimal("retirada", 2);
 
 		parent::__construct($id);
 	}
@@ -45,6 +47,14 @@ class Operacao extends DBTable {
 		return $this->columns["contratos"]->getvalue();
 	}
 
+	function getdeposito($formated = false){
+		return $this->columns["deposito"]->getvalue($formated);
+	}
+
+	function getretirada($formated = false){
+		return $this->columns["retirada"]->getvalue($formated);
+	}
+
 	function setidoperacao($idoperacao){
 		$this->columns["idoperacao"]->setvalue($idoperacao);
 	}
@@ -71,6 +81,14 @@ class Operacao extends DBTable {
 
 	function setcontratos($contratos){
 		$this->columns["contratos"]->setvalue($contratos);
+	}
+
+	function setdeposito($deposito){
+		$this->columns["deposito"]->setvalue($deposito);
+	}
+
+	function setretirada($retirada){
+		$this->columns["retirada"]->setvalue($retirada);
 	}
 
 }

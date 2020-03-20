@@ -5,7 +5,10 @@ function array_is_associative(array $array) {
 }
 
 function connection(){
-    global $connection;
+	global $connection;
+	
+	require_once(__DIR__."/../class/database/static/Connection.class.php");
+
     if(!is_object($connection)){
         $connection = new Connection();
     }

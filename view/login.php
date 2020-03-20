@@ -16,7 +16,7 @@ if($_SESSION["idusuario"]){
     <div style="margin: auto; max-width: 100%; padding: 15px; width: 350px">
         <h1 class="h3 mb-4 font-weight-normal text-center">LOGIN</h1>
         <label for="idusuario">Usuário</label>
-        <select id="idusuario" class="form-control mb-3" autofocus>
+        <select id="idusuario" class="form-control mb-3">
             <option value=""></option>
             <?php
             $usuario = new Usuario();
