@@ -1,7 +1,7 @@
 <?php
 
 // Define nivel de erros
-//error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 
 // Inicia a sessao
 session_start();

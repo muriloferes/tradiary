@@ -13,7 +13,7 @@ final class Connection extends PDO {
 			$db = ["host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "postgres", "dbname" => "tradiary"];
 		}else{
 			// Producao
-			$db = parse_url(getenv("{$this->database}_URL"));
+			$db = parse_url(getenv("DATABASE_URL"));
 		}
 
         $dbname = ($db["path"] ? ltrim($db["path"], "/") : $db["dbname"]);
