@@ -14,7 +14,7 @@ if($_SESSION["idusuario"]){
 
 <body style="align-items: center; display: flex">
     <div style="margin: auto; max-width: 100%; padding: 15px; width: 350px">
-        <h1 class="h3 mb-4 font-weight-normal text-center">Efetue seu login</h1>
+        <h1 class="h3 mb-4 font-weight-normal text-center">LOGIN</h1>
         <label for="idusuario">Usuário</label>
         <select id="idusuario" class="form-control mb-3" autofocus>
             <option value=""></option>

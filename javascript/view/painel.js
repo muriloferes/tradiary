@@ -7,4 +7,18 @@ $(document).ready(() => {
 	$('#totalbruto, #totalliquido').on('change', function(){
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
+
+	operacao_fechar();
 });
+
+function operacao_abrir(){
+	$('#form-operacao').show();
+}
+
+function operacao_fechar(){
+	$('#form-operacao').hide();
+}
+
+function operacao_gravar(){
+	
+}
