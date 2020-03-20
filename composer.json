@@ -1,0 +1,13 @@
+{
+    "name": "controlware/tradiary",
+    "description": "Tradiary",
+    "authors": [
+        {
+            "name": "Murilo Feres",
+            "email": "muriloferes90@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    }
+}
