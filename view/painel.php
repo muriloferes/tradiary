@@ -30,11 +30,11 @@ require_once(__DIR__ . "/../default/handling.php");
                 </div>
                 <div class="col-6 col-md-3 form-group">
                     <label for="totalbruto">Total bruto</label>
-                    <input id="totalbruto" type="number" class="form-control text-center">
+                    <input id="totalbruto" type="number" class="form-control text-center" step="0.010">
                 </div>
                 <div class="col-6 col-md-3 form-group">
                     <label for="totalliquido">Total líquido</label>
-                    <input id="totalliquido" type="number" class="form-control text-center">
+                    <input id="totalliquido" type="number" class="form-control text-center" step="0.010">
                 </div>
             </div>
         </div>
