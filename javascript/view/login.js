@@ -13,6 +13,7 @@ function entrar(){
 		data: {
 			idusuario: $('#idusuario').val(),
 			senha: $('#senha').val()
-		}
+		},
+		success: () => (window.location.href = 'painel')
 	});
 }
