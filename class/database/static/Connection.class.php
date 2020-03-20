@@ -7,11 +7,14 @@ final class Connection extends PDO {
     private $transaction = 0; // Controlador do profundidade de transacoes
 
     public function __construct(){
-		// Producao
-		// $db = parse_url(getenv("{$this->database}_URL"));
-
-		// Desenvolvimento
-		$db = ["host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "postgres", "dbname" => "tradiary"];
+		// Verifica o sistema operacional
+		if(strtolower(substr(PHP_OS, 0, 3)) === "win"){
+			// Desenvolvimento
+			$db = ["host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "postgres", "dbname" => "tradiary"];
+		}else{
+			// Producao
+			$db = parse_url(getenv("{$this->database}_URL"));
+		}
 
         $dbname = ($db["path"] ? ltrim($db["path"], "/") : $db["dbname"]);
         parent::__construct("pgsql: host={$db["host"]}; port={$db["port"]}; user={$db["user"]}; password={$db["pass"]}; dbname={$dbname}");
