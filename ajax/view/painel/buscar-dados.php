@@ -49,9 +49,13 @@ $res = $connection->query([
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "GROUP BY 1",
-    "ORDER BY 1 DESC"
+    "ORDER BY 1"
 ]);
 $arr = $res->fetchAll();
+
+$chart_labels = [];
+$chart_data_resultado = [];
+$chart_data_saldo = [];
 
 $table  = "<table class='table table-striped table-bordered table-hover'>";
 $table .= "  <thead class='thead-dark'>";
@@ -102,10 +106,53 @@ foreach($arr as $row){
     $table .= "  <td class='text-center'>{$periodo}</td>";
     $table .= "  <td class='text-right'>{$valor}</td>";
     $table .= "</tr>";
+
+    $chart_labels[] = $periodo;
+    $chart_data_resultado[] = $row["valor"];
+    $chart_data_saldo[] = (end($chart_data_saldo) ?? 0) + $row["valor"];
 }
 $table .= "  </tbody>";
 $table .= "</table>";
 
+if(in_array($tempo, ["dia", "semana"])){
+    $chart_title = "Saldo";
+    $chart_data = $chart_data_saldo;
+}else{
+    $chart_title = "Resultado";
+    $chart_data = $chart_data_resultado;
+}
+
 json_success([
-    "table" => $table
+    "table" => $table,
+    "chart" => mount_chart($chart_title, $chart_labels, $chart_data)
 ]);
+
+function mount_chart($title, $labels, $data){
+    return [
+        "type" => "line",
+        "data" => [
+            "labels" => $labels,
+            "datasets" => [[
+                "label" => $title,
+                "data" => $data,
+                "backgroundColor" => "rgba(0, 123, 255, 0.25)",
+                "borderColor" => "rgba(0, 123, 255, 1)",
+                "borderWidth" => 2,
+                "lineTension" => 0.1,
+                "pointBackgroundColor" => "rgba(0, 0, 0, 0)",
+                "pointBorderColor" => "rgba(0, 0, 0, 0)",
+                "pointBorderWidth" => 0
+            ]]
+        ],
+        "options" => [
+            "responsive" => true,
+            "scales" => [
+                "yAxes" => [
+                    "ticks" => [
+                        "beginAtZero" => true
+                    ]
+                ]
+            ]
+        ]
+    ];
+}

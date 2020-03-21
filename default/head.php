@@ -13,6 +13,10 @@
 <script type="text/javascript" src="library/fontawesome-5.10.2/js/all.min.js"></script>
 <link href="library/fontawesome-5.10.2/css/all.min.css" rel="stylesheet">
 
+<!-- ChartJS -->
+<script type="text/javascript" src="library/chartjs-2.9.3/Chart.min.js"></script>
+<link href="library/chartjs-2.9.3/Chart.min.css" rel="stylesheet">
+
 <!-- Arquivos padres -->
 <script type="text/javascript" src="javascript/default/loading.js"></script>
 <script type="text/javascript" src="javascript/default/service.js"></script>

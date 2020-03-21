@@ -71,12 +71,8 @@ require_once(__DIR__ . "/../default/handling.php");
                 </div>
             </div>
         </div>
-        <div id="data-chart">
-            
-        </div>
-        <div id="data-table">
-
-        </div>
+        <canvas id="data-chart" class="mt-3"></canvas>
+        <div id="data-table" class="mb-3 mt-5"></div>
     </div>
 </body>
 

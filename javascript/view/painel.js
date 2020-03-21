@@ -15,6 +15,7 @@ $(document).ready(() => {
 	buscar_dados();
 });
 
+let chart = null;
 function buscar_dados(){
 	const coluna = $('#grp-valor .btn.btn-primary').attr('coluna');
 	const tempo = $('#grp-tempo .btn.btn-primary').attr('tempo');
@@ -24,7 +25,9 @@ function buscar_dados(){
 		url: 'ajax/view/painel/buscar-dados.php',
 		data: { coluna, tempo },
 		success: result => {
-			$('#data-chart').html(result.chart);
+			if(chart !== null) chart.destroy();
+
+			chart = new Chart('data-chart', result.chart);
 			$('#data-table').html(result.table);
 		}
 	});
