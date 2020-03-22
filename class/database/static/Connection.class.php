@@ -16,7 +16,8 @@ final class Connection extends PDO {
 			$db = parse_url(getenv("DATABASE_URL"));
 		}
 
-        $dbname = ($db["path"] ? ltrim($db["path"], "/") : $db["dbname"]);
+		$dbname = ($db["path"] ? ltrim($db["path"], "/") : $db["dbname"]);
+		die(var_dump($db));
         parent::__construct("pgsql: host={$db["host"]}; port={$db["port"]}; user={$db["user"]}; password={$db["pass"]}; dbname={$dbname}");
     }
 
