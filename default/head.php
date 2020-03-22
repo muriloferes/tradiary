@@ -16,8 +16,10 @@
 <link href="library/fontawesome-5.10.2/css/all.min.css" rel="stylesheet">
 -->
 <!-- ChartJS -->
-<script type="text/javascript" src="library/chartjs-2.9.3/Chart.min.js"></script>
-<link href="library/chartjs-2.9.3/Chart.min.css" rel="stylesheet">
+<?php if(current_view() === "painel"){ ?>
+    <script type="text/javascript" src="library/chartjs-2.9.3/Chart.min.js"></script>
+    <link href="library/chartjs-2.9.3/Chart.min.css" rel="stylesheet">
+<?php } ?>
 
 <!-- Arquivos padres -->
 <script type="text/javascript" src="javascript/default/loading.js"></script>
