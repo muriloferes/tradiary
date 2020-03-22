@@ -27,7 +27,36 @@ function buscar_dados(){
 		success: result => {
 			if(chart !== null) chart.destroy();
 
-			chart = new Chart('data-chart', result.chart);
+			const chartData = result.chart;
+			if(chartData.type === 'bar'){
+				chartData.options = {
+					...chartData.options,
+					tooltips: {
+						enabled: false
+					},
+					hover: {
+						animationDuration: 0
+					},
+					animation: {
+						duration: 500,
+						onComplete: function(){
+							const ctx = this.chart.ctx;
+							ctx.font = Chart.helpers.fontString(10, 'normal', Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = this.chart.config.options.defaultFontColor;
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+							this.data.datasets.forEach(function(dataset){
+								for(let i = 0; i < dataset.data.length; i++){
+									const model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+									ctx.fillText(dataset.data[i], model.x, model.y + (dataset.data[i] < 0 ? 12 : -2));
+								}
+							});
+						}
+					}
+				};
+			}
+
+			chart = new Chart('data-chart', chartData);
 			$('#data-table').html(result.table);
 		}
 	});
@@ -35,6 +64,16 @@ function buscar_dados(){
 
 function operacao_abrir(){
 	$('#form-operacao').show();
+	$('#btn-operacao-alterar .fa-plus').hide();
+	$('#btn-operacao-alterar .fa-minus').show();
+}
+
+function operacao_alternar(){
+	if($('#form-operacao').is(':visible')){
+		operacao_fechar();
+	}else{
+		operacao_abrir();
+	}
 }
 
 function operacao_buscar(){
@@ -57,8 +96,30 @@ function operacao_buscar(){
 	});
 }
 
+function operacao_excluir(){
+	const dtoperacao = $('#dtoperacao').val();
+	if(!dtoperacao || dtoperacao.length === 0){
+		alert('Informe a data da operação.');
+		return false;
+	}
+	if(!confirm('Tem certeza que deseja excluír a operação do dia informado?')){
+		return false;
+	}
+	$.service({
+		url: 'ajax/view/painel/operacao-excluir.php',
+		data: { dtoperacao },
+		success: () => {
+			operacao_limpar();
+			buscar_dados();
+			alert('Excluído com sucesso!');
+		}
+	});
+}
+
 function operacao_fechar(){
 	$('#form-operacao').hide();
+	$('#btn-operacao-alterar .fa-plus').show();
+	$('#btn-operacao-alterar .fa-minus').hide();
 }
 
 function operacao_gravar(){
@@ -79,6 +140,7 @@ function operacao_gravar(){
 		},
 		success: () => {
 			operacao_limpar();
+			buscar_dados();
 			alert('Gravado com sucesso!');
 		}
 	});

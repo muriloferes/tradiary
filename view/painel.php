@@ -10,9 +10,10 @@ require_once(__DIR__ . "/../default/handling.php");
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <span class="navbar-brand">Tradiary</span>
-            <button class="btn btn-secondary ml-auto" onclick="operacao_abrir()">
+            <span class="navbar-brand">TRA<b>DIARY</b></span>
+            <button id="btn-operacao-alterar" class="btn btn-secondary ml-auto" onclick="operacao_alternar()">
                 <i class="fa fa-plus"></i>
+                <i class="fa fa-minus"></i>
             </button>
         </div>
     </nav>
@@ -45,7 +46,9 @@ require_once(__DIR__ . "/../default/handling.php");
                     <input id="retirada" type="number" class="form-control text-center" step="0.010">
                 </div>
                 <div class="col-4 col-md-1 offset-md-2 mb-3">
-                    <button class="btn btn-block btn-secondary" onclick="operacao_fechar()">Fechar</button>
+                    <button class="btn btn-block btn-secondary" style="height: 38px" onclick="operacao_excluir()">
+                        <i class="fa fa-trash-alt"></i>
+                    </button>
                 </div>
                 <div class="col-8 col-md-3 mb-3">
                     <button class="btn btn-block btn-success" onclick="operacao_gravar()">Gravar</button>

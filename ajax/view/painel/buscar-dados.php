@@ -57,12 +57,10 @@ $chart_labels = [];
 $chart_data_resultado = [];
 $chart_data_saldo = [];
 
-$table  = "<table class='table table-striped table-bordered table-hover'>";
-$table .= "  <thead class='thead-dark'>";
-$table .= "    <th class='text-center' style='width: 50%'>{$tempo_label}</th>";
-$table .= "    <th class='text-center' style='width: 50%'>{$coluna_label}</th>";
-$table .= "  </thead>";
-$table .= "  <tbody>";
+
+
+$arr_tr = [];
+
 foreach($arr as $row){
     $color = null;
     switch($coluna){
@@ -102,41 +100,66 @@ foreach($arr as $row){
     $valor = $row["valor"];
     $valor = number_format($valor, ($coluna === "contratos" ? 0 : 2), ",", ".");
 
-    $table .= "<tr class='{$tr_class}'>";
-    $table .= "  <td class='text-center'>{$periodo}</td>";
-    $table .= "  <td class='text-right'>{$valor}</td>";
-    $table .= "</tr>";
+    $tr  = "<tr class='{$tr_class}'>";
+    $tr .= "  <td class='text-center'>{$periodo}</td>";
+    $tr .= "  <td class='text-right'>{$valor}</td>";
+    $tr .= "</tr>";
+    $arr_tr[] = $tr;
 
     $chart_labels[] = $periodo;
     $chart_data_resultado[] = $row["valor"];
     $chart_data_saldo[] = (end($chart_data_saldo) ?? 0) + $row["valor"];
 }
+$table  = "<table class='table table-striped table-bordered table-hover'>";
+$table .= "  <thead class='thead-dark'>";
+$table .= "    <th class='text-center' style='width: 50%'>{$tempo_label}</th>";
+$table .= "    <th class='text-center' style='width: 50%'>{$coluna_label}</th>";
+$table .= "  </thead>";
+$table .= "  <tbody>";
+$table .= implode("", array_reverse($arr_tr));
 $table .= "  </tbody>";
 $table .= "</table>";
 
-if(in_array($tempo, ["dia", "semana"])){
-    $chart_title = "Saldo";
-    $chart_data = $chart_data_saldo;
+$chart_config = ["labels" => $chart_labels];
+
+if(in_array($tempo, ["dia"])){
+    $chart_config["title"] = "Saldo";
+    $chart_config["data"] = $chart_data_saldo;
+    $chart_config["type"] = "line";
+    $chart_config["backgroundColor"] = "rgba(0, 123, 255, 0.25)";
+    $chart_config["borderColor"] = "rgba(0, 123, 255, 1)";
 }else{
-    $chart_title = "Resultado";
-    $chart_data = $chart_data_resultado;
+    $chart_config["title"] = "Resultado";
+    $chart_config["data"] = $chart_data_resultado;
+    $chart_config["type"] = "bar";
+    $chart_config["backgroundColor"] = [];
+    $chart_config["borderColor"] = [];
+    foreach($chart_config["data"] as $valor){
+        if($valor < 0){
+            $chart_config["backgroundColor"][] = "rgba(220, 53, 69, 0.25)";
+            $chart_config["borderColor"][] = "rgba(220, 53, 69, 1)";
+        }else{
+            $chart_config["backgroundColor"][] = "rgba(40, 167, 69, 0.25)";
+            $chart_config["borderColor"][] = "rgba(40, 167, 69, 1)";
+        }
+    }
 }
 
 json_success([
     "table" => $table,
-    "chart" => mount_chart($chart_title, $chart_labels, $chart_data)
+    "chart" => mount_chart($chart_config)
 ]);
 
-function mount_chart($title, $labels, $data){
+function mount_chart($config){
     return [
-        "type" => "line",
+        "type" => $config["type"],
         "data" => [
-            "labels" => $labels,
+            "labels" => $config["labels"],
             "datasets" => [[
-                "label" => $title,
-                "data" => $data,
-                "backgroundColor" => "rgba(0, 123, 255, 0.25)",
-                "borderColor" => "rgba(0, 123, 255, 1)",
+                "label" => $config["title"],
+                "data" => $config["data"],
+                "backgroundColor" => $config["backgroundColor"],
+                "borderColor" => $config["borderColor"],
                 "borderWidth" => 2,
                 "lineTension" => 0.1,
                 "pointBackgroundColor" => "rgba(0, 0, 0, 0)",

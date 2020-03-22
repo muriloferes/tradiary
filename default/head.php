@@ -1,6 +1,7 @@
 <meta charset="utf-8">
-<title>Tradiary</title>
+<title>TraDiary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="shortcut icon" href="image/favicon.png">
 
 <!-- jQuery -->
 <script type="text/javascript" src="library/jquery-3.4.1/jquery.min.js"></script>
