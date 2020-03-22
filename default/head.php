@@ -11,9 +11,10 @@
 <link href="library/bootstrap-4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 <!-- Fontawsome -->
+<!--
 <script type="text/javascript" src="library/fontawesome-5.10.2/js/all.min.js"></script>
 <link href="library/fontawesome-5.10.2/css/all.min.css" rel="stylesheet">
-
+-->
 <!-- ChartJS -->
 <script type="text/javascript" src="library/chartjs-2.9.3/Chart.min.js"></script>
 <link href="library/chartjs-2.9.3/Chart.min.css" rel="stylesheet">
