@@ -16,7 +16,7 @@ if(!in_array(current_view(), ["login", "logout"])){
         die();
     }
 }
-
+die("aqui 4");
 // Auto registro das classes
 spl_autoload_register(function($classname){
     // Nome da classe minusculo
