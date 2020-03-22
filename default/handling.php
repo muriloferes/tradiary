@@ -1,11 +1,11 @@
 <?php
-die("aqui");
+
 // Define nivel de erros
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 
 // Inicia a sessao
 session_start();
-
+die("aqui 2");
 // Arquivos padroes
 require_once(__DIR__."/function.php");
 
