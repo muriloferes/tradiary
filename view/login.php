@@ -19,6 +19,7 @@ if($_SESSION["idusuario"]){
         <select id="idusuario" class="form-control mb-3">
             <option value=""></option>
             <?php
+            die("aqui 5");
             $usuario = new Usuario();
             $arr_usuario = $usuario->search("status = 'ativo'", "nome");
             foreach($arr_usuario as $usuario){
