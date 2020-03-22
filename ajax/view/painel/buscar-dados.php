@@ -108,7 +108,7 @@ foreach($arr as $row){
 
     $chart_labels[] = $periodo;
     $chart_data_resultado[] = $row["valor"];
-    $chart_data_saldo[] = (end($chart_data_saldo) ?? 0) + $row["valor"];
+    $chart_data_saldo[] = round(((end($chart_data_saldo) ?? 0) + $row["valor"]), 2);
 }
 $table  = "<table class='table table-striped table-bordered table-hover'>";
 $table .= "  <thead class='thead-dark'>";
