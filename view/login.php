@@ -5,7 +5,6 @@ if($_SESSION["idusuario"]){
     header("Location: painel");
     die();
 }
-die("aqui 6");
 ?>
 <html lang="pt-Br">
 
