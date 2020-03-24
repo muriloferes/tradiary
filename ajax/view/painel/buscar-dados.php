@@ -59,6 +59,7 @@ $chart_data_saldo = [];
 
 
 
+$acumulado = 0;
 $arr_tr = [];
 
 foreach($arr as $row){
@@ -94,15 +95,21 @@ foreach($arr as $row){
     }
     $tr_class = implode(" ", $tr_class);
 
+    $decimais = ($coluna === "contratos" ? 0 : 2);
+
     $periodo = $row["periodo"];
     $periodo = implode("/", array_reverse(explode("-", $periodo)));
 
     $valor = $row["valor"];
-    $valor = number_format($valor, ($coluna === "contratos" ? 0 : 2), ",", ".");
+    $valor = number_format($valor, $decimais, ",", ".");
+    
+    $acumulado += $row["valor"];
+    $acumulado = number_format($acumulado, $decimais, ",", ".");
 
     $tr  = "<tr class='{$tr_class}'>";
     $tr .= "  <td class='text-center'>{$periodo}</td>";
     $tr .= "  <td class='text-right'>{$valor}</td>";
+    $tr .= "  <td class='text-right'>{$acumulado}</td>";
     $tr .= "</tr>";
     $arr_tr[] = $tr;
 
@@ -112,8 +119,9 @@ foreach($arr as $row){
 }
 $table  = "<table class='table table-striped table-bordered table-hover'>";
 $table .= "  <thead class='thead-dark'>";
-$table .= "    <th class='text-center' style='width: 50%'>{$tempo_label}</th>";
-$table .= "    <th class='text-center' style='width: 50%'>{$coluna_label}</th>";
+$table .= "    <th class='text-center' style='width: 34%'>{$tempo_label}</th>";
+$table .= "    <th class='text-center' style='width: 33%'>{$coluna_label}</th>";
+$table .= "    <th class='text-center' style='width: 33%'>Acumulado</th>";
 $table .= "  </thead>";
 $table .= "  <tbody>";
 $table .= implode("", array_reverse($arr_tr));
