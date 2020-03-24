@@ -104,12 +104,12 @@ foreach($arr as $row){
     $valor = number_format($valor, $decimais, ",", ".");
     
     $acumulado += $row["valor"];
-    $acumulado = number_format($acumulado, $decimais, ",", ".");
+    $acumulado_formatado = number_format($acumulado, $decimais, ",", ".");
 
     $tr  = "<tr class='{$tr_class}'>";
     $tr .= "  <td class='text-center'>{$periodo}</td>";
     $tr .= "  <td class='text-right'>{$valor}</td>";
-    $tr .= "  <td class='text-right'>{$acumulado}</td>";
+    $tr .= "  <td class='text-right'>{$acumulado_formatado}</td>";
     $tr .= "</tr>";
     $arr_tr[] = $tr;
 
