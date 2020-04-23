@@ -136,7 +136,6 @@ function mount_chart($config){
         "data" => [
             "labels" => $config["labels"],
             "datasets" => [[
-                "label" => $config["title"],
                 "data" => $config["data"],
                 "backgroundColor" => $config["backgroundColor"],
                 "borderColor" => $config["borderColor"],
@@ -148,6 +147,14 @@ function mount_chart($config){
             ]]
         ],
         "options" => [
+            "legend" => [
+                "display" => false
+            ],
+            "title" => [
+                "display" => true,
+                "fontSize" => 18,
+                "text" => $config["title"]
+            ],
             "responsive" => true,
             "scales" => [
                 "yAxes" => [
