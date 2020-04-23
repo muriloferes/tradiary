@@ -5,6 +5,7 @@ require_once(__DIR__ . "/../default/handling.php");
 
 <head>
     <?php require_once(__DIR__ . "/../default/head.php"); ?>
+    <link href="style/css/view/painel.css" rel="stylesheet">
 </head>
 
 <body>
@@ -59,10 +60,9 @@ require_once(__DIR__ . "/../default/handling.php");
     <div class="container">
         <div class="row mt-3">
             <div class="col-sm-12 col-md-6">
-                <div id="grp-valor" class="btn-group w-100 mb-2">
-                    <button type="button" class="btn btn-primary" coluna="totalliquido">Líquido</button>
-                    <button type="button" class="btn btn-light" coluna="totalbruto">Bruto</button>
-                    <button type="button" class="btn btn-light" coluna="deposito">Depósitos</button>
+                <div id="grp-tipo" class="btn-group w-100 mb-2">
+                    <button type="button" class="btn btn-primary" tipo="grafico" onclick="buscar_dados_grafico()">Gráfico</button>
+                    <button type="button" class="btn btn-light" tipo="tabela" onclick="buscar_dados_tabela()">Tabela</button>
                 </div>
             </div>
             <div class="col-sm-12 col-md-6">
@@ -74,8 +74,32 @@ require_once(__DIR__ . "/../default/handling.php");
                 </div>
             </div>
         </div>
-        <canvas id="data-chart" class="mt-3"></canvas>
-        <div id="data-table" class="mb-3 mt-5"></div>
+        <div id="page-chart">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-semana-atual"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-mes-atual"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-ano-atual"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-saldo-diario"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-ultimas-semanas"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-ultimos-meses"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-ultimos-anos"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="page-table"></div>
     </div>
 </body>
 

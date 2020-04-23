@@ -10,7 +10,7 @@ final class Connection extends PDO {
 		// Verifica o sistema operacional
 		if(strtolower(substr(PHP_OS, 0, 3)) === "win"){
 			// Desenvolvimento
-			$db = ["host" => "localhost", "port" => "5432", "user" => "postgres", "pass" => "postgres", "dbname" => "tradiary"];
+			$db = parse_url("postgres://qzlohtnurokogr:9533e686953c10bff4c4ca9adb12d209c1e478f6564eddfffcbe4b1e03b35b75@ec2-23-22-156-110.compute-1.amazonaws.com:5432/d6ekvhp80qlpnp");
 		}else{
 			// Producao
 			$db = parse_url(getenv("DATABASE_URL"));

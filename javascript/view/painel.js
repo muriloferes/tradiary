@@ -2,8 +2,9 @@ $(document).ready(() => {
 	$('.btn-group .btn').click(function(){
 		$(this).closest('.btn-group').find('.btn').removeClass('btn-primary').addClass('btn-light');
 		$(this).removeClass('btn-light').addClass('btn-primary');
-		buscar_dados();
 	});
+
+	$('#grp-tempo .btn').click(() => buscar_dados_tabela());
 
 	$('#dtoperacao').change(() => operacao_buscar());
 
@@ -12,54 +13,82 @@ $(document).ready(() => {
 	});
 
 	operacao_fechar();
-	buscar_dados();
+	buscar_dados_grafico();
 });
 
 let chart = null;
-function buscar_dados(){
-	const coluna = $('#grp-valor .btn.btn-primary').attr('coluna');
+function buscar_dados_grafico(){
+	$('#grp-tempo').hide();
+	$('#page-chart').show();
+	$('#page-table').hide();
+
+	$.service({
+		loading: true,
+		url: 'ajax/view/painel/buscar-dados-grafico.php',
+		success: result => {
+			montar_grafico('chart-semana-atual', result.chart_semana_atual);
+			montar_grafico('chart-mes-atual', result.chart_mes_atual);
+			montar_grafico('chart-ano-atual', result.chart_ano_atual);
+			montar_grafico('chart-saldo-diario', result.chart_saldo_diario);
+			montar_grafico('chart-ultimas-semanas', result.chart_ultimas_semanas);
+			montar_grafico('chart-ultimos-meses', result.chart_ultimos_meses);
+			montar_grafico('chart-ultimos-anos', result.chart_ultimos_anos);
+		}
+	});
+}
+
+function buscar_dados_tabela(){
+	$('#grp-tempo').show();
+	$('#page-chart').hide();
+	$('#page-table').show();
+
 	const tempo = $('#grp-tempo .btn.btn-primary').attr('tempo');
 
 	$.service({
 		loading: true,
-		url: 'ajax/view/painel/buscar-dados.php',
-		data: { coluna, tempo },
+		url: 'ajax/view/painel/buscar-dados-tabela.php',
+		data: { tempo },
 		success: result => {
-			if(chart !== null) chart.destroy();
-
-			const chartData = result.chart;
-			if(chartData.type === 'bar'){
-				chartData.options = {
-					...chartData.options,
-					tooltips: {
-						enabled: false
-					},
-					hover: {
-						animationDuration: 0
-					},
-					animation: {
-						duration: 500,
-						onComplete: function(){
-							const ctx = this.chart.ctx;
-							ctx.font = Chart.helpers.fontString(10, 'normal', Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = this.chart.config.options.defaultFontColor;
-							ctx.textAlign = 'center';
-							ctx.textBaseline = 'bottom';
-							this.data.datasets.forEach(function(dataset){
-								for(let i = 0; i < dataset.data.length; i++){
-									const model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
-									ctx.fillText(dataset.data[i], model.x, model.y + (dataset.data[i] < 0 ? 12 : -2));
-								}
-							});
-						}
-					}
-				};
-			}
-
-			chart = new Chart('data-chart', chartData);
-			$('#data-table').html(result.table);
+			$('#page-table').html(result.table);
 		}
 	});
+}
+
+function montar_grafico(id, chartData){
+	const element = document.getElementById(id);
+	const chart = $(element).prop('chart');
+
+	if(chart) chart.destroy();
+
+	if(chartData.type === 'bar'){
+		chartData.options = {
+			...chartData.options,
+			tooltips: {
+				enabled: false
+			},
+			hover: {
+				animationDuration: 0
+			},
+			animation: {
+				duration: 500,
+				onComplete: function(){
+					const ctx = this.chart.ctx;
+					ctx.font = Chart.helpers.fontString(10, 'normal', Chart.defaults.global.defaultFontFamily);
+					ctx.fillStyle = this.chart.config.options.defaultFontColor;
+					ctx.textAlign = 'center';
+					ctx.textBaseline = 'bottom';
+					this.data.datasets.forEach(function(dataset){
+						for(let i = 0; i < dataset.data.length; i++){
+							const model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+							ctx.fillText(dataset.data[i], model.x, model.y + (dataset.data[i] < 0 ? 12 : -2));
+						}
+					});
+				}
+			}
+		};
+	}
+
+	$(element).prop('chart', new Chart(id, chartData));
 }
 
 function operacao_abrir(){
