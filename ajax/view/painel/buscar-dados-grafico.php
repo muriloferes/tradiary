@@ -30,12 +30,14 @@ $chart_ano_atual = query_to_chart("Ano atual", "line", [
     "ORDER BY 1"
 ], true);
 
-$chart_saldo_diario = query_to_chart("Saldo Geral", "line", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+$chart_ultimos_dias = query_to_chart("Últimos 90 dias", "bar", [
+    "SELECT dtoperacao AS periodo,",
+    "  totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
+    "  AND dtoperacao >= CURRENT_DATE - '90 days'::INTERVAL",
     "ORDER BY 1"
-], true);
+]);
 
 $chart_ultimas_semanas = query_to_chart("Últimas 12 semanas", "bar", [
     "SELECT (EXTRACT(YEAR FROM dtoperacao) || '-' || LPAD(EXTRACT(WEEK FROM dtoperacao)::TEXT, 2, '0')) AS periodo,",
@@ -67,14 +69,24 @@ $chart_ultimos_anos = query_to_chart("Últimos 5 anos", "bar", [
     "ORDER BY 1"
 ]);
 
+$chart_saldo_diario = query_to_chart("Saldo geral", "line", [
+    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "FROM operacao",
+    "WHERE idusuario = '{$_SESSION["idusuario"]}'",
+    "ORDER BY 1"
+], true);
+
 json_success([
-    "chart_semana_atual" => $chart_semana_atual,
-    "chart_mes_atual" => $chart_mes_atual,
-    "chart_ano_atual" => $chart_ano_atual,
-    "chart_saldo_diario" => $chart_saldo_diario,
-    "chart_ultimas_semanas" => $chart_ultimas_semanas,
-    "chart_ultimos_meses" => $chart_ultimos_meses,
-    "chart_ultimos_anos" => $chart_ultimos_anos
+    "charts" => [
+        "chart_semana_atual" => $chart_semana_atual,
+        "chart_mes_atual" => $chart_mes_atual,
+        "chart_ano_atual" => $chart_ano_atual,
+        "chart_saldo_diario" => $chart_saldo_diario,
+        "chart_ultimos_dias" => $chart_ultimos_dias,
+        "chart_ultimas_semanas" => $chart_ultimas_semanas,
+        "chart_ultimos_meses" => $chart_ultimos_meses,
+        "chart_ultimos_anos" => $chart_ultimos_anos
+    ]
 ]);
 
 function query_to_chart($title, $type, $query, $cumulative = false){

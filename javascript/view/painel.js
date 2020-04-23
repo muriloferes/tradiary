@@ -26,13 +26,10 @@ function buscar_dados_grafico(){
 		loading: true,
 		url: 'ajax/view/painel/buscar-dados-grafico.php',
 		success: result => {
-			montar_grafico('chart-semana-atual', result.chart_semana_atual);
-			montar_grafico('chart-mes-atual', result.chart_mes_atual);
-			montar_grafico('chart-ano-atual', result.chart_ano_atual);
-			montar_grafico('chart-saldo-diario', result.chart_saldo_diario);
-			montar_grafico('chart-ultimas-semanas', result.chart_ultimas_semanas);
-			montar_grafico('chart-ultimos-meses', result.chart_ultimos_meses);
-			montar_grafico('chart-ultimos-anos', result.chart_ultimos_anos);
+			for(const name in result.charts){
+				const id = name.split('_').join('-');
+				montar_grafico(id, result.charts[name]);
+			}
 		}
 	});
 }

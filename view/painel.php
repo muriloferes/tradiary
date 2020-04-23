@@ -86,7 +86,7 @@ require_once(__DIR__ . "/../default/handling.php");
                     <canvas id="chart-ano-atual"></canvas>
                 </div>
                 <div class="col-sm-12 col-md-6">
-                    <canvas id="chart-saldo-diario"></canvas>
+                    <canvas id="chart-ultimos-dias"></canvas>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <canvas id="chart-ultimas-semanas"></canvas>
@@ -96,6 +96,9 @@ require_once(__DIR__ . "/../default/handling.php");
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <canvas id="chart-ultimos-anos"></canvas>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <canvas id="chart-saldo-diario"></canvas>
                 </div>
             </div>
         </div>
