@@ -30,14 +30,14 @@ $chart_ano_atual = query_to_chart("Ano atual", "line", [
     "ORDER BY 1"
 ], true);
 
-$chart_ultimos_dias = query_to_chart("Últimos 90 dias", "bar", [
+$chart_ultimos_dias = query_to_chart("Últimos 90 dias", "line", [
     "SELECT dtoperacao AS periodo,",
     "  totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '90 days'::INTERVAL",
     "ORDER BY 1"
-]);
+], true);
 
 $chart_ultimas_semanas = query_to_chart("Últimas 12 semanas", "bar", [
     "SELECT (EXTRACT(YEAR FROM dtoperacao) || '-' || LPAD(EXTRACT(WEEK FROM dtoperacao)::TEXT, 2, '0')) AS periodo,",
