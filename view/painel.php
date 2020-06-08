@@ -100,7 +100,7 @@ require_once(__DIR__ . "/../default/handling.php");
                 <div class="col-sm-12 col-md-6">
                     <canvas id="chart-ano-atual"></canvas>
                 </div>
-                <div class="col-sm-12 col-md-12">
+                <div class="col-sm-12 col-md-12 mb-5">
                     <canvas id="chart-saldo-diario"></canvas>
                 </div>
             </div>
