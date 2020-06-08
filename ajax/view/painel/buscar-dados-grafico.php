@@ -21,19 +21,11 @@ $chart_ultimos_30_dias = query_to_chart("Últimos 30 dias", "bar", [
     "ORDER BY 1"
 ]);
 
-$chart_mes_atual = query_to_chart("Saldo mês atual", "line", [
+$chart_mes_atual = query_to_chart("Saldo do mês atual", "line", [
     "SELECT dtoperacao AS periodo, totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND extract(MONTH FROM dtoperacao) = extract(MONTH FROM current_date)",
-    "  AND extract(YEAR FROM dtoperacao) = extract(YEAR FROM current_date)",
-    "ORDER BY 1"
-], true);
-
-$chart_ano_atual = query_to_chart("Saldo do ano atual", "line", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
-    "FROM operacao",
-    "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND extract(YEAR FROM dtoperacao) = extract(YEAR FROM current_date)",
     "ORDER BY 1"
 ], true);
@@ -44,6 +36,14 @@ $chart_ultimos_90_dias = query_to_chart("Saldo dos últimos 90 dias", "line", [
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '90 days'::INTERVAL",
+    "ORDER BY 1"
+], true);
+
+$chart_ano_atual = query_to_chart("Saldo do ano atual", "line", [
+    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "FROM operacao",
+    "WHERE idusuario = '{$_SESSION["idusuario"]}'",
+    "  AND extract(YEAR FROM dtoperacao) = extract(YEAR FROM current_date)",
     "ORDER BY 1"
 ], true);
 
