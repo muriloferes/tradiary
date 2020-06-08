@@ -13,7 +13,15 @@ $chart_semana_atual = query_to_chart("Semana atual", "bar", [
     "ORDER BY 1"
 ]);
 
-$chart_mes_atual = query_to_chart("Mês atual", "line", [
+$chart_ultimos_30_dias = query_to_chart("Últimos 30 dias", "bar", [
+    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "FROM operacao",
+    "WHERE idusuario = '{$_SESSION["idusuario"]}'",
+    "  AND dtoperacao >= CURRENT_DATE - '30 days'::INTERVAL",
+    "ORDER BY 1"
+]);
+
+$chart_mes_atual = query_to_chart("Saldo mês atual", "line", [
     "SELECT dtoperacao AS periodo, totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
@@ -22,7 +30,7 @@ $chart_mes_atual = query_to_chart("Mês atual", "line", [
     "ORDER BY 1"
 ], true);
 
-$chart_ano_atual = query_to_chart("Ano atual", "line", [
+$chart_ano_atual = query_to_chart("Saldo do ano atual", "line", [
     "SELECT dtoperacao AS periodo, totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
@@ -30,7 +38,7 @@ $chart_ano_atual = query_to_chart("Ano atual", "line", [
     "ORDER BY 1"
 ], true);
 
-$chart_ultimos_dias = query_to_chart("Últimos 90 dias", "line", [
+$chart_ultimos_90_dias = query_to_chart("Saldo dos últimos 90 dias", "line", [
     "SELECT dtoperacao AS periodo,",
     "  totalliquido AS valor",
     "FROM operacao",
@@ -69,7 +77,7 @@ $chart_ultimos_anos = query_to_chart("Últimos 5 anos", "bar", [
     "ORDER BY 1"
 ]);
 
-$chart_saldo_diario = query_to_chart("Saldo geral", "line", [
+$chart_saldo_diario = query_to_chart("Saldo desde o início", "line", [
     "SELECT dtoperacao AS periodo, totalliquido AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
@@ -79,10 +87,11 @@ $chart_saldo_diario = query_to_chart("Saldo geral", "line", [
 json_success([
     "charts" => [
         "chart_semana_atual" => $chart_semana_atual,
+        "chart_ultimos_30_dias" => $chart_ultimos_30_dias,
         "chart_mes_atual" => $chart_mes_atual,
         "chart_ano_atual" => $chart_ano_atual,
         "chart_saldo_diario" => $chart_saldo_diario,
-        "chart_ultimos_dias" => $chart_ultimos_dias,
+        "chart_ultimos_90_dias" => $chart_ultimos_90_dias,
         "chart_ultimas_semanas" => $chart_ultimas_semanas,
         "chart_ultimos_meses" => $chart_ultimos_meses,
         "chart_ultimos_anos" => $chart_ultimos_anos
