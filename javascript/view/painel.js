@@ -16,7 +16,14 @@ $(document).ready(() => {
 	buscar_dados_grafico();
 });
 
-let chart = null;
+function buscar_dados(){
+	if($('#page-chart').is(':visible')){
+		buscar_dados_grafico();
+	}else{
+		buscar_dados_tabela();
+	}
+}
+
 function buscar_dados_grafico(){
 	$('#grp-tempo').hide();
 	$('#page-chart').show();
@@ -84,6 +91,49 @@ function montar_grafico(id, chartData){
 			}
 		};
 	}
+
+	chartData.plugins = [{
+		beforeDraw: chartInstance => {
+			if(chartInstance.config.type !== 'bar'){
+				return true;
+			}
+
+			const drawLine = (lineAt, color, width = 1) => {
+				const ctxPlugin = chartInstance.chart.ctx;
+				const xAxe = chartInstance.scales[chartInstance.config.options.scales.xAxes[0].id];
+				const yAxe = chartInstance.scales[chartInstance.config.options.scales.yAxes[0].id];
+				ctxPlugin.strokeStyle = color;
+				ctxPlugin.lineWidth = width;
+				ctxPlugin.beginPath();
+				lineAt = yAxe.getPixelForValue(lineAt);
+				ctxPlugin.moveTo(xAxe.left, lineAt);
+				ctxPlugin.lineTo(xAxe.right, lineAt);
+				ctxPlugin.stroke();
+			};
+
+			const listSum = list => {
+				if(list.length === 0){
+					return 0;
+				}else{
+					return list.reduce((a, b) => (parseFloat(a) + parseFloat(b)));
+				}
+			};
+
+			const positivos = [];
+			const negativos = [];
+			chartInstance.data.datasets.forEach(function(dataset){
+				for(const value of dataset.data){
+					if(value > 0) positivos.push(value);
+					if(value < 0) negativos.push(value);
+				}
+			});
+			const final = [...positivos, ...negativos];
+
+			drawLine((listSum(positivos) / positivos.length), 'rgba(0, 200, 0, 1)', 1);
+			drawLine((listSum(negativos) / negativos.length), 'rgba(255, 0, 0, 1)', 1);
+			drawLine((listSum(final) / final.length), 'rgba(255, 255, 0, 1)', 3);
+		}
+	}];
 
 	$(element).prop('chart', new Chart(id, chartData));
 }
