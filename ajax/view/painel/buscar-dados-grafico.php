@@ -4,8 +4,10 @@ require_once(__DIR__."/../../../default/handling.php");
 
 $connection = connection();
 
+$coluna_valor = "totalliquido";
+
 $chart_semana_atual = query_to_chart("Semana atual", "bar", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "SELECT dtoperacao AS periodo, {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND extract(WEEK FROM dtoperacao) = extract(WEEK FROM current_date)",
@@ -14,7 +16,7 @@ $chart_semana_atual = query_to_chart("Semana atual", "bar", [
 ]);
 
 $chart_ultimos_30_dias = query_to_chart("Últimos 30 dias", "bar", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "SELECT dtoperacao AS periodo, {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '30 days'::INTERVAL",
@@ -22,17 +24,17 @@ $chart_ultimos_30_dias = query_to_chart("Últimos 30 dias", "bar", [
 ]);
 
 $chart_mes_atual = query_to_chart("Saldo do mês atual", "line", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "SELECT dtoperacao AS periodo, {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND extract(MONTH FROM dtoperacao) = extract(MONTH FROM current_date)",
     "  AND extract(YEAR FROM dtoperacao) = extract(YEAR FROM current_date)",
     "ORDER BY 1"
-], true);
+], true, true);
 
 $chart_ultimos_90_dias = query_to_chart("Saldo dos últimos 90 dias", "line", [
     "SELECT dtoperacao AS periodo,",
-    "  totalliquido AS valor",
+    "  {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '90 days'::INTERVAL",
@@ -40,16 +42,16 @@ $chart_ultimos_90_dias = query_to_chart("Saldo dos últimos 90 dias", "line", [
 ], true);
 
 $chart_ano_atual = query_to_chart("Saldo do ano atual", "line", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "SELECT dtoperacao AS periodo, {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND extract(YEAR FROM dtoperacao) = extract(YEAR FROM current_date)",
     "ORDER BY 1"
-], true);
+], true, true);
 
 $chart_ultimas_semanas = query_to_chart("Últimas 12 semanas", "bar", [
     "SELECT (EXTRACT(YEAR FROM dtoperacao) || '-' || LPAD(EXTRACT(WEEK FROM dtoperacao)::TEXT, 2, '0')) AS periodo,",
-    "  SUM(totalliquido) AS valor",
+    "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '12 weeks'::INTERVAL",
@@ -59,7 +61,7 @@ $chart_ultimas_semanas = query_to_chart("Últimas 12 semanas", "bar", [
 
 $chart_ultimos_meses = query_to_chart("Últimos 12 meses", "bar", [
     "SELECT (EXTRACT(YEAR FROM dtoperacao) || '-' || LPAD(EXTRACT(MONTH FROM dtoperacao)::TEXT, 2, '0')) AS periodo,",
-    "  SUM(totalliquido) AS valor",
+    "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '12 months'::INTERVAL",
@@ -69,7 +71,7 @@ $chart_ultimos_meses = query_to_chart("Últimos 12 meses", "bar", [
 
 $chart_ultimos_anos = query_to_chart("Últimos 5 anos", "bar", [
     "SELECT EXTRACT(YEAR FROM dtoperacao) AS periodo,",
-    "  SUM(totalliquido) AS valor",
+    "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "  AND dtoperacao >= CURRENT_DATE - '5 years'::INTERVAL",
@@ -78,11 +80,11 @@ $chart_ultimos_anos = query_to_chart("Últimos 5 anos", "bar", [
 ]);
 
 $chart_saldo_diario = query_to_chart("Saldo desde o início", "line", [
-    "SELECT dtoperacao AS periodo, totalliquido AS valor",
+    "SELECT dtoperacao AS periodo, {$coluna_valor} AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
     "ORDER BY 1"
-], true);
+], true, true);
 
 json_success([
     "charts" => [
@@ -98,7 +100,7 @@ json_success([
     ]
 ]);
 
-function query_to_chart($title, $type, $query, $cumulative = false){
+function query_to_chart($title, $type, $query, $cumulative = false, $startOnZero = false){
     $connection = connection();
 
     if(is_array($query)) $query = implode(" ", $query);
@@ -108,6 +110,11 @@ function query_to_chart($title, $type, $query, $cumulative = false){
 
     $chart_labels = [];
     $chart_data = [];
+
+    if($startOnZero){
+        $chart_labels[] = "Inicio";
+        $chart_data[] = 0;
+    }
 
     foreach($arr as $row){
         $periodo = $row["periodo"];

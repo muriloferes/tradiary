@@ -99,6 +99,9 @@ function montar_grafico(id, chartData){
 			}
 
 			const drawLine = (lineAt, color, width = 1) => {
+				if(isNaN(lineAt)){
+					return true;
+				}
 				const ctxPlugin = chartInstance.chart.ctx;
 				const xAxe = chartInstance.scales[chartInstance.config.options.scales.xAxes[0].id];
 				const yAxe = chartInstance.scales[chartInstance.config.options.scales.yAxes[0].id];
@@ -131,6 +134,7 @@ function montar_grafico(id, chartData){
 
 			drawLine((listSum(positivos) / positivos.length), 'rgba(0, 200, 0, 1)', 1);
 			drawLine((listSum(negativos) / negativos.length), 'rgba(255, 0, 0, 1)', 1);
+			console.log({ list: final, sum: listSum(final), length: final.length, final: (listSum(final) / final.length) });
 			drawLine((listSum(final) / final.length), 'rgba(255, 255, 0, 1)', 3);
 		}
 	}];
