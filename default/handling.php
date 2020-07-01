@@ -12,7 +12,11 @@ require_once(__DIR__."/function.php");
 // Verifica o login
 if(!in_array(current_view(), ["login", "logout"])){
     if(!$_SESSION["idusuario"]){
-        http_response_code(401);
+        if(strpos($_SERVER["SCRIPT_NAME"], "/ajax/") === false){
+            header("Location: login");
+        }else{
+            http_response_code(401);
+        }
         die();
     }
 }
