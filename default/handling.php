@@ -12,7 +12,7 @@ require_once(__DIR__."/function.php");
 // Verifica o login
 if(!in_array(current_view(), ["login", "logout"])){
     if(!$_SESSION["idusuario"]){
-        header("Location: login");
+        http_response_code(401);
         die();
     }
 }

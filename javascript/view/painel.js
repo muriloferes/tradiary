@@ -134,7 +134,6 @@ function montar_grafico(id, chartData){
 
 			drawLine((listSum(positivos) / positivos.length), 'rgba(0, 200, 0, 1)', 1);
 			drawLine((listSum(negativos) / negativos.length), 'rgba(255, 0, 0, 1)', 1);
-			console.log({ list: final, sum: listSum(final), length: final.length, final: (listSum(final) / final.length) });
 			drawLine((listSum(final) / final.length), 'rgba(255, 255, 0, 1)', 3);
 		}
 	}];

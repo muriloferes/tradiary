@@ -48,7 +48,10 @@ $.service = function(settings){
 	// Verifica se deve faze o tratamento automatico de erro
 	if(settings.autoError){
 		finalSettings.error = (jqXHR, textStatus, errorThrown) => {
-			if(!['abort'].includes(textStatus)){
+			if(jqXHR.status === 401){
+				alert('Sua sessão foi expirada. Efetue o login novamente.');
+				window.location.href = 'login';
+			}else if(!['abort'].includes(textStatus)){
 				alert('Desculpe, houve uma falha de conexão com o servidor.\nPor favor, tente novamente.');
 			}
 			if(typeof settings.error === 'function'){
