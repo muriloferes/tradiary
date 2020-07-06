@@ -54,7 +54,7 @@ $chart_ultimas_semanas = query_to_chart("Últimas 12 semanas", "bar", [
     "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
-    "  AND dtoperacao >= CURRENT_DATE - '12 weeks'::INTERVAL",
+    "  AND dtoperacao >= DATE_TRUNC('WEEK', (CURRENT_DATE - '12 weeks'::INTERVAL))::DATE",
     "GROUP BY 1",
     "ORDER BY 1"
 ]);
@@ -64,7 +64,7 @@ $chart_ultimos_meses = query_to_chart("Últimos 12 meses", "bar", [
     "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
-    "  AND dtoperacao >= CURRENT_DATE - '12 months'::INTERVAL",
+    "  AND dtoperacao >= DATE_TRUNC('MONTH', (CURRENT_DATE - '12 months'::INTERVAL))::DATE",
     "GROUP BY 1",
     "ORDER BY 1"
 ]);
@@ -74,7 +74,7 @@ $chart_ultimos_anos = query_to_chart("Últimos 5 anos", "bar", [
     "  SUM({$coluna_valor}) AS valor",
     "FROM operacao",
     "WHERE idusuario = '{$_SESSION["idusuario"]}'",
-    "  AND dtoperacao >= CURRENT_DATE - '5 years'::INTERVAL",
+    "  AND dtoperacao >= DATE_TRUNC('YEAR', (CURRENT_DATE - '5 years'::INTERVAL))::DATE",
     "GROUP BY 1",
     "ORDER BY 1"
 ]);
