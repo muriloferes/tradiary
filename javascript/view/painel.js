@@ -132,18 +132,28 @@ function montar_grafico(id, chartData){
 			});
 			const final = [...positivos, ...negativos];
 
+			const mediaFinal = listSum(final) / final.length;
+
 			drawLine((listSum(positivos) / positivos.length), 'rgba(0, 200, 0, 1)', 1);
 			drawLine((listSum(negativos) / negativos.length), 'rgba(255, 0, 0, 1)', 1);
-			drawLine((listSum(final) / final.length), 'rgba(255, 255, 0, 1)', 3);
+			drawLine(mediaFinal, 'rgba(255, 255, 0, 1)', 3);
 
 			const ctx = chartInstance.chart.ctx;
 			ctx.textAlign = 'right';
 			ctx.textBaseline = 'top';
 			ctx.font = Chart.helpers.fontString(10, 'normal', Chart.defaults.global.defaultFontFamily);
 			ctx.fillStyle = 'rgba(0, 100, 0, 1)';
-			ctx.fillText(`Positivos: ${positivos.length} (${Math.round(positivos.length / final.length * 100)}%)`, chartInstance.chartArea.right, 8);
+			ctx.fillText(`Positivos: ${positivos.length} (${Math.round(positivos.length / final.length * 100)}%)`, chartInstance.chartArea.right, 0);
 			ctx.fillStyle = 'rgba(150, 0, 0, 1)';
-			ctx.fillText(`Negativos: ${negativos.length} (${Math.round(negativos.length / final.length * 100)}%)`, chartInstance.chartArea.right, 20);
+			ctx.fillText(`Negativos: ${negativos.length} (${Math.round(negativos.length / final.length * 100)}%)`, chartInstance.chartArea.right, 12);
+			if(mediaFinal > 0){
+				ctx.fillStyle = 'rgba(0, 100, 0, 1)';
+			}else if(mediaFinal < 0){
+				ctx.fillStyle = 'rgba(150, 0, 0, 1)';
+			}else{
+				ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+			}
+			ctx.fillText(`Valor médio: ${mediaFinal > 0 ? '+' : ''}${mediaFinal.toFixed(2)}`, chartInstance.chartArea.right, 24);
 		}
 	}];
 
